@@ -1,0 +1,94 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using TimeReg_Api.TimeRegApp.Model.Account;
+using TimeReg_Api.TimeRegApp.Model.Authentication;
+using TimeReg_Api.TimeRegApp.Model.TimeRegistration;
+
+var builder = WebApplication.CreateBuilder(args);
+
+ConfigurationManager Configuration = builder.Configuration;
+IWebHostEnvironment Environment = builder.Environment;
+IServiceCollection Services = builder.Services;
+
+// Add services to the container.
+
+// Add scope for dependency injection.
+builder.Services.AddScoped<IAccount, Account>();
+builder.Services.AddScoped<IGenerateJwt, GenerateJwt>();
+builder.Services.AddScoped<ITimeRegistration, TimeRegistration>();
+
+// Adds CORS policies
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
+});
+
+// Adds configuration for database connectionString
+builder.Services.AddDbContext<TimeReg_Api.DataContext.TimeRegContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Database") + $"Database={Configuration.GetConnectionString("DatabaseName")}"));
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+
+// Adds bearer scheme authorization to the API
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "TimeReg Api",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please insert JWT with Bearer into field",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+   {
+     new OpenApiSecurityScheme
+     {
+       Reference = new OpenApiReference
+       {
+         Type = ReferenceType.SecurityScheme,
+         Id = "Bearer"
+       }
+      },
+      new string[] { }
+    }
+  });
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    // Define options
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = Configuration["Jwt:Issuer"],
+        ValidAudience = Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+    };
+});
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors("CorsPolicy");
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
