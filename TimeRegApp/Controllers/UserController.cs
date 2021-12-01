@@ -18,12 +18,14 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         private readonly IConfiguration _config;
         private readonly IAccount _account;
         private readonly IGenerateJwt _generateJwt;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IConfiguration config, IAccount account, IGenerateJwt generateJwt)
+        public UserController(IConfiguration config, IAccount account, IGenerateJwt generateJwt, ILogger<UserController> logger)
         {
             _config = config;
             _account = account;
             _generateJwt = generateJwt;
+            _logger = logger;
         }
 
         [HttpPost("create/")]
@@ -41,13 +43,20 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 userParams.Add("@role", "user");
 
                 var user = await Task.FromResult(_account.CreateUser(userParams));
-              
+
                 // Simply returns the created user Id
                 return Success(user.Id);
 
-            } catch (Exception ex)
+                // Logging errors to terminal
+            }
+            catch (Npgsql.PostgresException e)
             {
-                return InternalError();
+                _logger.LogWarning($"User with Email already exists - Exception: {e.ToString()}");
+
+                return new JsonResult("User already exists!")
+                {
+                    StatusCode = 409
+                };
             }
         }
 
@@ -75,6 +84,27 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Error logging in user with email {login.Email} - Exception {e.ToString()}");
+                return InternalError();
+            }
+        }
+
+        // TODO needs authorization
+        [HttpDelete("delete")]
+        public async Task<JsonResult> DeleteUser(string userEmail)
+        {
+            try
+            {
+                var result = await Task.FromResult(_account.DeleteUser(userEmail));
+                if (!result)
+                {
+                    return InvalidRequest();
+                }
+                return Success(result);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error Deleting User - Exception: {e.ToString()}");
                 return InternalError();
             }
         }

@@ -36,5 +36,13 @@ namespace TimeReg_Api.TimeRegApp.Model.Account
               parms
               ).FirstOrDefault();
         }
+
+        public bool DeleteUser(string userEmail)
+        {
+
+            using IDbConnection db = new NpgsqlConnection(_connectionString);
+            db.Execute(@"DELETE FROM users WHERE email = @Email", new DynamicParameters(new { Email = userEmail }));
+            return true;
+        }
     }
 }

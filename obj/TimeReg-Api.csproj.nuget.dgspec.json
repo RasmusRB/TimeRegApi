@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rasmu\\source\\repos\\timereg-api\\TimeReg-Api\\TimeReg-Api.csproj": {}
+    "C:\\Users\\rasmu\\Projects\\asd\\TimeRegApi\\TimeReg-Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rasmu\\source\\repos\\timereg-api\\TimeReg-Api\\TimeReg-Api.csproj": {
+    "C:\\Users\\rasmu\\Projects\\asd\\TimeRegApi\\TimeReg-Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rasmu\\source\\repos\\timereg-api\\TimeReg-Api\\TimeReg-Api.csproj",
+        "projectUniqueName": "C:\\Users\\rasmu\\Projects\\asd\\TimeRegApi\\TimeReg-Api.csproj",
         "projectName": "TimeReg-Api",
-        "projectPath": "C:\\Users\\rasmu\\source\\repos\\timereg-api\\TimeReg-Api\\TimeReg-Api.csproj",
+        "projectPath": "C:\\Users\\rasmu\\Projects\\asd\\TimeRegApi\\TimeReg-Api.csproj",
         "packagesPath": "C:\\Users\\rasmu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rasmu\\source\\repos\\timereg-api\\TimeReg-Api\\obj\\",
+        "outputPath": "C:\\Users\\rasmu\\Projects\\asd\\TimeRegApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\rasmu\\AppData\\Roaming\\NuGet\\NuGet.Config",
