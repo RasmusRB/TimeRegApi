@@ -9,11 +9,10 @@ using TimeReg_Api.TimeRegApp.Model.TimeRegistration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 ConfigurationManager Configuration = builder.Configuration;
 IWebHostEnvironment Environment = builder.Environment;
 IServiceCollection Services = builder.Services;
-
-// Add services to the container.
 
 // Add scope for dependency injection.
 builder.Services.AddScoped<IAccount, Account>();
@@ -26,7 +25,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
 });
 
-// Adds configuration for database connectionString
+// Dependency injection for database connection
 builder.Services.AddDbContext<TimeReg_Api.DataContext.TimeRegContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Database") + $"Database={Configuration.GetConnectionString("DatabaseName")}"));
 
 builder.Services.AddControllers();

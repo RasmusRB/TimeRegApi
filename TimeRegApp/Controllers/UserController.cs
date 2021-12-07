@@ -15,6 +15,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
 
     public class UserController : ControllerBase
     {
+        // Add various interfaces for use in the controller
         private readonly IConfiguration _config;
         private readonly IAccount _account;
         private readonly IGenerateJwt _generateJwt;
@@ -28,6 +29,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             _logger = logger;
         }
 
+        // Creates a single user
         [HttpPost("create/")]
         public async Task<JsonResult> CreateUser([FromForm] CreateUser cUser)
         {
@@ -35,6 +37,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             {
                 var userParams = new DynamicParameters();
                 userParams.Add("@email", cUser.Email);
+                // Using BCrypt nuget package to hash the entered password and dispatch it to the db
                 userParams.Add("@password", BCrypt.Net.BCrypt.HashPassword(cUser.Password));
                 userParams.Add("@firstname", cUser.Firstname);
                 userParams.Add("@lastname", cUser.Lastname);
@@ -42,15 +45,16 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 // TODO change role distribution
                 userParams.Add("@role", "user");
 
+                // Call method from manager class to actually create the user
                 var user = await Task.FromResult(_account.CreateUser(userParams));
 
                 // Simply returns the created user Id
                 return Success(user.Id);
 
-                // Logging errors to terminal
             }
             catch (Npgsql.PostgresException e)
             {
+                // Logging errors to terminal by using ILogger class
                 _logger.LogWarning($"User with Email already exists - Exception: {e.ToString()}");
 
                 return new JsonResult("User already exists!")
@@ -60,11 +64,13 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             }
         }
 
+        // Posts login credentials
         [HttpPost("login/")]
         public async Task<JsonResult> Login([FromForm] Login login)
         {
             try
             {
+                // Checks if there's a user in DB with entered email
                 var user = await Task.FromResult(_account.GetUserByEmail(login.Email));
                 if (user is null)
                 {
@@ -72,6 +78,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 }
 
                 // Check if the password the user entered is correct.
+                // Verify is a built in BCrypt function
                 bool verified =
                   BCrypt.Net.BCrypt.Verify(login.Password, user.Password);
 
@@ -90,11 +97,13 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         }
 
         // TODO needs authorization
+        // Deletes a single user
         [HttpDelete("delete")]
         public async Task<JsonResult> DeleteUser(string userEmail)
         {
             try
             {
+                // Deletes a user based on the entered email
                 var result = await Task.FromResult(_account.DeleteUser(userEmail));
                 if (!result)
                 {

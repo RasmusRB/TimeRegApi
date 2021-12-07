@@ -4,6 +4,7 @@ using System.Data;
 
 namespace TimeReg_Api.TimeRegApp.Model.Account
 {
+    // Manager class for user account
     public class Account : IAccount
     {
         private string _connectionString;

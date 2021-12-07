@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uuUOu52/Q7qJ2CLkIWwhx1c0uKeoVLLW7DQKMlLWi+5OAlTCZYfwb8tkBXmxEwevZODOKGzn3RFN/L6+MwyJWw==",
+  "dgSpecHash": "UkwMdmzmZzAOEUjc4fe8XtWN/+61zigcumW/4ra/nyvectgrFPTbh803+BDt/evdb/1rSsfxIrGS2IJpulcfhg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\rasmu\\Projects\\asd\\TimeRegApi\\TimeReg-Api.csproj",
+  "projectFilePath": "C:\\Users\\rasmu\\source\\repos\\timeregapi\\TimeReg-Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rasmu\\.nuget\\packages\\bcrypt.net-core\\1.6.0\\bcrypt.net-core.1.6.0.nupkg.sha512",
     "C:\\Users\\rasmu\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
