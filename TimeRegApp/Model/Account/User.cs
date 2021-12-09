@@ -1,5 +1,6 @@
 ﻿namespace TimeReg_Api.TimeRegApp.Model.Account
 {
+    // Model class for user
     public class User
     {
         public long Id { get; internal set; }

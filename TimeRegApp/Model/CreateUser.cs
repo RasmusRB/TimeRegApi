@@ -1,5 +1,6 @@
 ﻿namespace TimeReg_Api.TimeRegApp.Model
 {
+    // Model class for creating a user
     public class CreateUser
     {
         public string Email { get; set; }
