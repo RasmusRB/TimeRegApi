@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using TimeReg_Api.TimeRegApp.Model;
 using TimeReg_Api.TimeRegApp.Model.Account;
 using TimeReg_Api.TimeRegApp.Model.Authentication;
