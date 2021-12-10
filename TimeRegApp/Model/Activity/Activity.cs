@@ -1,6 +1,7 @@
 using Dapper;
 using Npgsql;
 using System.Data;
+using TimeReg_Api.TimeRegApp.Model.TimeRegistration;
 
 namespace TimeRegApi.TimeRegApp.Model.Activity
 {
@@ -13,11 +14,11 @@ namespace TimeRegApi.TimeRegApp.Model.Activity
             _connectionString = config.GetConnectionString("Database") + $"Database={config.GetConnectionString("DatabaseName")}";
         }
 
-        public Activity CreateActivity(DynamicParameters aCreate)
-        {
-            using IDbConnection db = new NpgsqlConnection(_connectionString);
-            return db.Query<TimeRegistration>("@INSERT INTO activities (activity) VALUES (@activity) returning*", aCreate).FirstOrDefault();
-        }
+        // public Activity CreateActivity(DynamicParameters aCreate)
+        // {
+        //     using IDbConnection db = new NpgsqlConnection(_connectionString);
+        //     return db.Query<TimeRegistration>("@INSERT INTO activities (activity) VALUES (@activity)", aCreate).FirstOrDefault();
+        // }
 
         public TimeRegistration GetRegistrationById(int id)
         {

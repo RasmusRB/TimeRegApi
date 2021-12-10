@@ -28,6 +28,13 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             _logger = logger;
         }
 
+        [HttpGet("getuser/")]
+        public async Task<JsonResult> GetUserInfo(string email)
+        {
+            var user = await Task.FromResult(_account.GetUserByEmail(email));
+            return Success(user);
+        }
+
         [HttpPost("create/")]
         public async Task<JsonResult> CreateUser([FromForm] CreateUser cUser)
         {

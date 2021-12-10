@@ -14,10 +14,17 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         private readonly IConfiguration _config;
         private readonly IAccount _account;
 
+        
+
         public ApiController(IConfiguration config, IAccount account)
         {
             _config = config;
             _account = account;
         }
+
+
+
+
+
     }
 }
