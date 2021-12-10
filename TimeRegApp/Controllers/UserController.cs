@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TimeReg_Api.TimeRegApp.Model;
 using TimeReg_Api.TimeRegApp.Model.Account;
 using TimeReg_Api.TimeRegApp.Model.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimeReg_Api.TimeRegApp.Controllers
 {
@@ -25,6 +26,15 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             _account = account;
             _generateJwt = generateJwt;
             _logger = logger;
+        }
+
+        [HttpGet("getuser/")]
+        //[Authorize(Roles = "")]
+        public async Task<JsonResult> GetUserInfo (string email)
+        {
+            var user = await Task.FromResult(_account.GetUserByEmail(email));
+
+            return Success(user);
         }
 
         // Creates a single user
