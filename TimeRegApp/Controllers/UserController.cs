@@ -1,8 +1,7 @@
 ﻿using Dapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using TimeReg_Api.TimeRegApp.Model;
 using TimeReg_Api.TimeRegApp.Model.Account;
 using TimeReg_Api.TimeRegApp.Model.Authentication;
@@ -87,7 +86,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 {
                     return InvalidRequest("Wrong Username or Password.");
                 }
-                return Success(_generateJwt.GenerateJWT(user));
+                return Success(_generateJwt.GenerateJWT("session_token", login.Email, user));
             }
             catch (Exception e)
             {
@@ -96,9 +95,9 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             }
         }
 
-        // TODO needs authorization
         // Deletes a single user
         [HttpDelete("delete")]
+        // TODO fix - Should work, but doesn't [Authorize(Roles = "RequireAdministratorRole")]
         public async Task<JsonResult> DeleteUser(string userEmail)
         {
             try

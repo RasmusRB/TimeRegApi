@@ -16,18 +16,19 @@ namespace TimeReg_Api.TimeRegApp.Model.Authentication
         }
 
         // Function to generate a JWT
-        public string GenerateJWT(User user)
+        public string GenerateJWT(string type, string subject, User user)
         {
             // Define key and credentials
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             // Define claims
-            var claims = new[]
+            IList<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
-                // could define like this: new Claim("whatever", "whatever i want")
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("typ", type),
+                new Claim("sub", subject),
+                new Claim("role", user.Role)
             };
 
             // Define the token
