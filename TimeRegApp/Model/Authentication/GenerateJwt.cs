@@ -10,31 +10,39 @@ namespace TimeReg_Api.TimeRegApp.Model.Authentication
     {
         private IConfiguration _config;
 
-        public GenerateJwt (IConfiguration config)
+        public GenerateJwt(IConfiguration config)
         {
             _config = config;
         }
 
-        public string GenerateJWT(User user)
+        // Function to generate a JWT
+        public string GenerateJWT(string type, string subject, User user)
         {
+            // Define key and credentials
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            // Define claims
+            IList<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim("typ", type),
+                new Claim("sub", subject),
+                new Claim("role", user.Role)
             };
 
+            // Define the token
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
 
+            // Writes the token
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        // TODO implement validation of token
         public string ValidateToken(string token, string expectedType)
         {
             throw new NotImplementedException();

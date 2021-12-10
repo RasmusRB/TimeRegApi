@@ -9,10 +9,12 @@ namespace TimeReg_Api.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // Create table in db
             migrationBuilder.CreateTable(
               name: "users",
               columns: table => new
               {
+                  // Define columns
                   id = table.Column<long>(type: "bigint", nullable: false).Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                   email = table.Column<string>(type: "text", nullable: true),
                   password = table.Column<string>(type: "text", nullable: true),
@@ -22,6 +24,7 @@ namespace TimeReg_Api.Migrations
                   role = table.Column<string>(type: "text", nullable: true),
 
               },
+              // Add constraints if necessary
               constraints: table =>
               {
                   table.PrimaryKey("PK_User", x => x.id);
