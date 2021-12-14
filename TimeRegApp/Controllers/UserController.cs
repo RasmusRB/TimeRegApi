@@ -132,7 +132,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
 
         // Deletes a single user
         [Authorize(Policy = "SessionToken")]
-        [HttpDelete("delete")]
+        [HttpDelete("delete/")]
         // TODO fix - Should work, but doesn't [Authorize(Roles = "RequireAdministratorRole")]
         public async Task<JsonResult> DeleteUser(string userEmail)
         {

@@ -2,9 +2,9 @@ using Dapper;
 using Npgsql;
 using System.Data;
 
-namespace TimeRegApi.TimeRegApp.Model.Activity
+namespace TimeReg_Api.TimeRegApp.Model.Activity
 {
-    public class Activity
+    public class Activity : IActivity
     {
         private string _connectionString;
 

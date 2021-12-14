@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -7,6 +6,7 @@ using System.Text;
 using TimeReg_Api.TimeRegApp.Model.Account;
 using TimeReg_Api.TimeRegApp.Model.Authentication;
 using TimeReg_Api.TimeRegApp.Model.TimeRegistration;
+using TimeReg_Api.TimeRegApp.Model.Activity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +17,7 @@ IServiceCollection Services = builder.Services;
 
 // Add scope for dependency injection.
 builder.Services.AddScoped<IAccount, Account>();
+builder.Services.AddScoped<IActivity, Activity>();
 builder.Services.AddScoped<IGenerateJwt, GenerateJwt>();
 builder.Services.AddScoped<ITimeRegistration, TimeRegistration>();
 
