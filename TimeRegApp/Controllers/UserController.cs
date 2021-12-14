@@ -51,7 +51,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 userParams.Add("@lastname", cUser.Lastname);
                 userParams.Add("@phone", cUser.Telephone);
                 // TODO change role distribution
-                userParams.Add("@role", "user");
+                userParams.Add("@isAdmin", false);
 
                 // Call method from manager class to actually create the user
                 var user = await Task.FromResult(_account.CreateUser(userParams));

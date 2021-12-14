@@ -25,10 +25,9 @@ namespace TimeReg_Api.TimeRegApp.Model.Authentication
             // Define claims
             IList<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, user.Role),
                 new Claim("typ", type),
                 new Claim("sub", subject),
-                new Claim("role", user.Role)
+                new Claim("asd", user.isAdmin.ToString()),
             };
 
             // Define the token

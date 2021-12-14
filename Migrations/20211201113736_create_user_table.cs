@@ -21,7 +21,7 @@ namespace TimeReg_Api.Migrations
                   firstname = table.Column<string>(type: "text", nullable: true),
                   lastname = table.Column<string>(type: "text", nullable: true),
                   telephone = table.Column<string>(type: "text", nullable: true),
-                  role = table.Column<string>(type: "text", nullable: true),
+                  isadmin = table.Column<bool>(type: "bool", nullable: false),
 
               },
               // Add constraints if necessary

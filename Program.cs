@@ -80,7 +80,7 @@ builder.Services.AddAuthentication(option =>
         );
 builder.Services.AddAuthorization(options =>
   {
-      options.AddPolicy("SessionToken", policy => policy.RequireClaim("typ", "session_token", "role"));
+      options.AddPolicy("SessionToken", policy => policy.RequireClaim("typ", "session_token"));
       options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("admin", "Admin"));
 
   });

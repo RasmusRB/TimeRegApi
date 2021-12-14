@@ -19,8 +19,8 @@ namespace TimeReg_Api.TimeRegApp.Model.Account
             using IDbConnection db = new NpgsqlConnection(_connectionString);
             return
             db.Query<User>(
-              @"INSERT INTO users(email, password, firstname, lastname, telephone, role)
-          VALUES (@email, @password, @firstname, @lastname, @phone, @role)
+              @"INSERT INTO users(email, password, firstname, lastname, telephone, isAdmin)
+          VALUES (@email, @password, @firstname, @lastname, @phone, @isAdmin)
           returning *",
               user
             ).FirstOrDefault();
