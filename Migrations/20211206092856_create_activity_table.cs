@@ -25,7 +25,7 @@ namespace TimeReg_Api.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropTable(name: "Activities");
         }
     }
 }

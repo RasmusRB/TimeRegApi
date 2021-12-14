@@ -41,7 +41,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 return Success(act);
 
             }
-            catch (Exception e)
+            catch (Npgsql.PostgresException e)
             {
                 // Logging errors to terminal by using ILogger class
                 _logger.LogWarning($"Exception: {e.ToString()}");
@@ -54,9 +54,8 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         {
             try
             {
-                var actId = await Task.FromResult(_activity.GetRegistrationById(id));
-
-                return Success(actId);
+                var act = await Task.FromResult(_activity.GetRegistrationById(id));
+                return Success(act);
             }
             catch (Exception e)
             {
@@ -88,11 +87,11 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         {
             try
             {
-                var act = await Task.FromResult(_activity.GetRegistrationById(id));
+                var act = await Task.FromResult(_activity.DeleteRegistrationById(id));
 
                 return Success(act);
-
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return InternalError();
             }

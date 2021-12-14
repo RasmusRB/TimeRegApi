@@ -4,9 +4,9 @@ namespace TimeReg_Api.TimeRegApp.Model.Activity
 {
     public interface IActivity
     {
-        Activity CreateActivity(DynamicParameters aCreate);
-        Activity GetRegistrationById(int id);
-        Activity UpdateRegistrationById(int id, string activity);
-        Activity DeleteRegistrationById(int id);
+        ActivityModel CreateActivity(DynamicParameters aCreate);
+        ActivityModel GetRegistrationById(int id);
+        ActivityModel UpdateRegistrationById(int id, string activity);
+        ActivityModel DeleteRegistrationById(int id);
     }
 }
