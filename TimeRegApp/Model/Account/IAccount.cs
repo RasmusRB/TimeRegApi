@@ -7,6 +7,7 @@ namespace TimeReg_Api.TimeRegApp.Model.Account
     {
         User CreateUser(DynamicParameters userParams);
         User GetUserByEmail(string email);
+        List<User> GetAllUsers();
         bool DeleteUser(string userEmail);
     }
 }

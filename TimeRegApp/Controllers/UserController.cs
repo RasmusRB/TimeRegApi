@@ -28,13 +28,39 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             _logger = logger;
         }
 
+        [Authorize(Policy = "SessionToken")]
         [HttpGet("getuser/")]
-        //[Authorize(Roles = "")]
-        public async Task<JsonResult> GetUserInfo (string email)
+        // TODO
+        // [Authorize(Roles = "")]
+        public async Task<JsonResult> GetUserInfo(string email)
         {
-            var user = await Task.FromResult(_account.GetUserByEmail(email));
+            try
+            {
+                var user = await Task.FromResult(_account.GetUserByEmail(email));
 
-            return Success(user);
+                return Success(user);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning($"Couldn't find user with that email - Exception {e.ToString()}");
+                return InternalError();
+            }
+        }
+
+        [Authorize(Policy = "SessionToken")]
+        [HttpGet("getallusers/")]
+        public async Task<JsonResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await Task.FromResult(_account.GetAllUsers());
+                return Success(users);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error fetching users - Exception {e.ToString()}");
+                return InternalError();
+            }
         }
 
         // Creates a single user
@@ -105,6 +131,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         }
 
         // Deletes a single user
+        [Authorize(Policy = "SessionToken")]
         [HttpDelete("delete")]
         // TODO fix - Should work, but doesn't [Authorize(Roles = "RequireAdministratorRole")]
         public async Task<JsonResult> DeleteUser(string userEmail)

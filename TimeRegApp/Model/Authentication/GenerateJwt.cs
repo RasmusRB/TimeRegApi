@@ -23,17 +23,17 @@ namespace TimeReg_Api.TimeRegApp.Model.Authentication
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             // Define claims
-            IList<Claim> claims = new List<Claim>
+            IList<Claim> claimsCollection = new List<Claim>
             {
                 new Claim("typ", type),
                 new Claim("sub", subject),
-                new Claim("asd", user.isAdmin.ToString()),
+                new Claim("admin", user.isAdmin.ToString()),
             };
 
             // Define the token
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
-                claims,
+                claims: claimsCollection,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
 

@@ -26,8 +26,31 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
 });
 
+builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("SessionToken", policy => policy.RequireClaim("typ", "session_token"));
+        });
 // Dependency injection for database connection
 builder.Services.AddDbContext<TimeReg_Api.DataContext.TimeRegContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Database") + $"Database={Configuration.GetConnectionString("DatabaseName")}"));
+
+builder.Services.AddAuthentication(option =>
+{
+            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+          {
+              options.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuer = true,
+                  ValidateAudience = true,
+                  ValidateLifetime = false,
+                  ValidateIssuerSigningKey = true,
+                  ValidIssuer = Configuration["Jwt:Issuer"],
+                  ValidAudience = Configuration["Jwt:Issuer"],
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+              };
+          }
+        );
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -60,36 +83,12 @@ builder.Services.AddSwaggerGen(c =>
         }
       );
 
-builder.Services.AddAuthentication(option =>
-        {
-            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-          {
-              options.TokenValidationParameters = new TokenValidationParameters
-              {
-                  ValidateIssuer = true,
-                  ValidateAudience = true,
-                  ValidateLifetime = true,
-                  ValidateIssuerSigningKey = true,
-                  ValidIssuer = Configuration["Jwt:Issuer"],
-                  ValidAudience = Configuration["Jwt:Issuer"],
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-              };
-          }
-        );
-builder.Services.AddAuthorization(options =>
-  {
-      options.AddPolicy("SessionToken", policy => policy.RequireClaim("typ", "session_token"));
-      options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("admin", "Admin"));
-
-  });
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<TimeReg_Api.DataContext.TimeRegContext>();
-
+    builder.Services.AddMvcCore();
+    builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -99,7 +98,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("CorsPolicy");
-app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

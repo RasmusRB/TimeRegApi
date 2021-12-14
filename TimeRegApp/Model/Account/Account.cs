@@ -18,8 +18,9 @@ namespace TimeReg_Api.TimeRegApp.Model.Account
         {
             using IDbConnection db = new NpgsqlConnection(_connectionString);
             return
+            // Using Dapper for object mapping
             db.Query<User>(
-              @"INSERT INTO users(email, password, firstname, lastname, telephone, isAdmin)
+              @"INSERT INTO users(email, password, firstname, lastname, telephone, isadmin)
           VALUES (@email, @password, @firstname, @lastname, @phone, @isAdmin)
           returning *",
               user
@@ -36,6 +37,12 @@ namespace TimeReg_Api.TimeRegApp.Model.Account
               $"Select * from users where email = @email",
               parms
               ).FirstOrDefault();
+        }
+
+        public List<User> GetAllUsers()
+        {
+            using IDbConnection db = new NpgsqlConnection(_connectionString);
+            return db.Query<User>(@"Select * from users").AsList();
         }
 
         public bool DeleteUser(string userEmail)
