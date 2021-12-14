@@ -63,6 +63,32 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             }
         }
 
+        [HttpPost("update/{id}")]
+        public async Task<JsonResult> UpdateUser(int id, [FromForm] CreateUser uUser)
+        {
+            try
+            {
+                var userParams = new DynamicParameters();
+                userParams.Add("@email", uUser.Email);
+                userParams.Add("@password", BCrypt.Net.BCrypt.HashPassword(uUser.Password));
+                userParams.Add("@firstname", uUser.Firstname);
+                userParams.Add("@lastname", uUser.Lastname);
+                userParams.Add("@telephone", uUser.Telephone);
+
+                var user = await Task.FromResult(_account.UpdateUser(id, userParams));
+
+                return Success(user);
+            }
+            catch (Npgsql.PostgresException e)
+            {
+                // Logging errors to terminal by using ILogger class
+                _logger.LogWarning($"Couldn't find user with Id - Exception: {e.ToString()}");
+                return InternalError();
+            }
+        }
+
+        // SET email = @email, password = @password, firstname = @firstname, lastname = @lastname, telephone = @telephone WHERE id = @id
+
         // Creates a single user
         [HttpPost("create/")]
         public async Task<JsonResult> CreateUser([FromForm] CreateUser cUser)

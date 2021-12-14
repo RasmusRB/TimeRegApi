@@ -27,6 +27,15 @@ namespace TimeReg_Api.TimeRegApp.Model.Account
             ).FirstOrDefault();
         }
 
+        public User UpdateUser(int id, DynamicParameters user)
+        {
+            using IDbConnection db = new NpgsqlConnection(_connectionString);
+            return db.Query<User>(
+                @"UPDATE users SET email = @email, password = @password, firstname = @firstname, lastname = @lastname, telephone = @telephone WHERE id = @id"
+            , user
+            ).FirstOrDefault();
+        }
+
         public User GetUserByEmail(string email)
         {
             var parms = new DynamicParameters();
