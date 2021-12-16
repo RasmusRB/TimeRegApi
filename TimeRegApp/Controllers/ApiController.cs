@@ -5,6 +5,8 @@ using TimeRegApi.TimeRegApp.Model;
 using Microsoft.AspNetCore.Authorization;
 using TimeReg_Api.TimeRegApp.Model.Activity;
 using TimeReg_Api.TimeRegApp.Model.Authentication;
+using TimeReg_Api.TimeRegApp.Model;
+using TimeReg_Api.TimeRegApp.Model.TimeRegistration;
 
 namespace TimeReg_Api.TimeRegApp.Controllers
 {
@@ -18,13 +20,35 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         private readonly IActivity _activity;
         private readonly ILogger<ApiController> _logger;
         private readonly IGenerateJwt _generateJwt;
+        private readonly ITimeRegistration _timeRegistration;
 
-        public ApiController(IConfiguration config, IActivity activity, ILogger<ApiController> logger, IGenerateJwt generateJwt)
+        public ApiController(IConfiguration config, IActivity activity, ILogger<ApiController> logger, IGenerateJwt generateJwt, ITimeRegistration timeRegistration)
         {
             _config = config;
             _activity = activity;
             _logger = logger;
             _generateJwt = generateJwt;
+            _timeRegistration = timeRegistration;
+        }
+
+        [HttpPost("timeregcreate/")]
+        public async Task<JsonResult> CreateTimeRegistration([FromForm] CreateTimeRegistration tReg)
+        {
+            try
+            {
+                var timeParams = new DynamicParameters();
+                timeParams.Add("@timereg_created", tReg.Created);
+                timeParams.Add("@timereg_start", tReg.Started);
+                timeParams.Add("@timereg_end", tReg.Ended);
+
+                var reg = await Task.FromResult(_timeRegistration.CreateTimeRegistration(timeParams));
+
+                return Success(reg);
+            } catch (Exception e)
+            {
+                _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
+                return InternalError();
+            }
         }
 
         [Authorize(Policy = "SessionToken")]
