@@ -28,6 +28,7 @@ namespace TimeReg_Api.TimeRegApp.Model.Authentication
                 new Claim("typ", type),
                 new Claim("sub", subject),
                 new Claim("admin", user.isAdmin.ToString()),
+                new Claim("id", user.Id.ToString()),
             };
 
             // Define the token
