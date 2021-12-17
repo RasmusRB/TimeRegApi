@@ -63,12 +63,14 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             }
         }
 
+        [Authorize(Policy = "SessionToken")]
         [HttpPost("update/{id}")]
         public async Task<JsonResult> UpdateUser(int id, [FromForm] CreateUser uUser)
         {
             try
             {
                 var userParams = new DynamicParameters();
+                userParams.Add("@id", id);
                 userParams.Add("@email", uUser.Email);
                 userParams.Add("@password", BCrypt.Net.BCrypt.HashPassword(uUser.Password));
                 userParams.Add("@firstname", uUser.Firstname);
