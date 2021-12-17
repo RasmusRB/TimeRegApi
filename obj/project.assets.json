@@ -2658,24 +2658,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rasmu\\.nuget\\packages\\": {}
+    "C:\\Users\\Nikolaj Hansen\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rasmu\\Projects\\timeregapi\\TimeReg-Api.csproj",
+      "projectUniqueName": "C:\\Users\\Nikolaj Hansen\\source\\repos\\TimeRegApi\\TimeReg-Api.csproj",
       "projectName": "TimeReg-Api",
-      "projectPath": "C:\\Users\\rasmu\\Projects\\timeregapi\\TimeReg-Api.csproj",
-      "packagesPath": "C:\\Users\\rasmu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rasmu\\Projects\\timeregapi\\obj\\",
+      "projectPath": "C:\\Users\\Nikolaj Hansen\\source\\repos\\TimeRegApi\\TimeReg-Api.csproj",
+      "packagesPath": "C:\\Users\\Nikolaj Hansen\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Nikolaj Hansen\\source\\repos\\TimeRegApi\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\rasmu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Nikolaj Hansen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

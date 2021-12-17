@@ -31,25 +31,29 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             _timeRegistration = timeRegistration;
         }
 
+        // Now with ActivityID and UserId
         [HttpPost("timeregcreate/")]
         public async Task<JsonResult> CreateTimeRegistration([FromForm] CreateTimeRegistration tReg)
         {
             try
             {
-                var timeParams = new DynamicParameters();
-                timeParams.Add("@timereg_created", tReg.Created);
+                var timeParams = new DynamicParameters();                
                 timeParams.Add("@timereg_start", tReg.Started);
                 timeParams.Add("@timereg_end", tReg.Ended);
+                timeParams.Add("@activity_id", tReg.ActivityId);
 
-                var reg = await Task.FromResult(_timeRegistration.CreateTimeRegistration(timeParams));
+                // Somehow get user_id from session.
+                timeParams.Add("@user_id", tReg.UserId);
 
-                return Success(reg);
+                var asd = await Task.FromResult(_timeRegistration.CreateTimeStamp(timeParams));
+
+                return Success(asd);
             } catch (Exception e)
             {
                 _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
                 return InternalError();
             }
-        }
+        }        
 
         [Authorize(Policy = "SessionToken")]
         [HttpPost("activitycreate/")]
