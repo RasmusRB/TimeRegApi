@@ -8,5 +8,6 @@ namespace TimeReg_Api.TimeRegApp.Model.Activity
         ActivityModel GetRegistrationById(int id);
         ActivityModel UpdateRegistrationById(int id, string activity);
         ActivityModel DeleteRegistrationById(int id);
+        IList<ActivityModel> GetAllActivities();
     }
 }

@@ -37,7 +37,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
         {
             try
             {
-                var timeParams = new DynamicParameters();                
+                var timeParams = new DynamicParameters();
                 timeParams.Add("@timereg_start", tReg.Started);
                 timeParams.Add("@timereg_end", tReg.Ended);
                 timeParams.Add("@activity_id", tReg.ActivityId);
@@ -48,12 +48,30 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 var asd = await Task.FromResult(_timeRegistration.CreateTimeStamp(timeParams));
 
                 return Success(asd);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
                 return InternalError();
             }
-        }        
+        }
+
+        [Authorize(Policy = "SessionToken")]
+        [HttpGet("activities/")]
+        public async Task<JsonResult> GetallActivities()
+        {
+            try
+            {
+                var act = await Task.FromResult(_activity.GetAllActivities());
+
+                return Success(act);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
+                return InternalError();
+            }
+        }
 
         [Authorize(Policy = "SessionToken")]
         [HttpPost("activitycreate/")]

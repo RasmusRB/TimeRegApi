@@ -19,6 +19,12 @@ namespace TimeReg_Api.TimeRegApp.Model.Activity
             return db.Query<ActivityModel>(@"INSERT INTO activities (activity) VALUES (@activity) returning *", aCreate).FirstOrDefault();
         }
 
+        public IList<ActivityModel> GetAllActivities()
+        {
+            using IDbConnection db = new NpgsqlConnection(_connectionString);
+            return db.Query<ActivityModel>(@"Select * from activities").ToList();
+        }
+
         public ActivityModel GetRegistrationById(int id)
         {
             var parms = new DynamicParameters();
