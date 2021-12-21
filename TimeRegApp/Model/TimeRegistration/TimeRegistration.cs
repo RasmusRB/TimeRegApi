@@ -24,6 +24,12 @@ namespace TimeReg_Api.TimeRegApp.Model.TimeRegistration
         // With user_id (who created a timr registration), by using session id somehow?
         // With activiy_id (what activity got registred).
         // timereg_created is set automatically, it's only neccesary to define "timereg_start" and end "timereg_end"" from a user.
+
+        public List<TimeRegModel> GetTimeRegistrations()
+        {
+            using IDbConnection db = new NpgsqlConnection(_connectionString);
+            return db.Query<TimeRegModel>(@"Select * from timeregistration").AsList();
+        }
         public TimeRegModel CreateTimeStamp(DynamicParameters tReg)
         {
             using IDbConnection db = new NpgsqlConnection(_connectionString);

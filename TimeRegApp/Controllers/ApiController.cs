@@ -47,7 +47,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 return InternalError();
             }
         }
-        
+
         [HttpGet("activityid/{id}")]
         public async Task<JsonResult> GetRegistrationById(int id)
         {
@@ -59,6 +59,22 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             catch (Exception e)
             {
                 _logger.LogWarning($"Couldn't find registration with that id - Except {e.ToString()}");
+                return InternalError();
+            }
+        }
+
+        [Authorize(Policy = "SessionToken")]
+        [HttpGet("timeregistrations/")]
+        public async Task<JsonResult> GetAllTimeRegs()
+        {
+            try
+            {
+                var treg = await Task.FromResult(_timeRegistration.GetTimeRegistrations());
+                return Success(treg);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
                 return InternalError();
             }
         }
