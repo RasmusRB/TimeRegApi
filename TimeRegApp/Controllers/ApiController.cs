@@ -31,6 +31,38 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             _timeRegistration = timeRegistration;
         }
 
+        [Authorize(Policy = "SessionToken")]
+        [HttpGet("activities/")]
+        public async Task<JsonResult> GetallActivities()
+        {
+            try
+            {
+                var act = await Task.FromResult(_activity.GetAllActivities());
+
+                return Success(act);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
+                return InternalError();
+            }
+        }
+        
+        [HttpGet("activityid/{id}")]
+        public async Task<JsonResult> GetRegistrationById(int id)
+        {
+            try
+            {
+                var act = await Task.FromResult(_activity.GetRegistrationById(id));
+                return Success(act);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning($"Couldn't find registration with that id - Except {e.ToString()}");
+                return InternalError();
+            }
+        }
+
         // Now with ActivityID and UserId
         [HttpPost("timeregcreate/")]
         public async Task<JsonResult> CreateTimeRegistration([FromForm] CreateTimeRegistration tReg)
@@ -48,23 +80,6 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 var asd = await Task.FromResult(_timeRegistration.CreateTimeStamp(timeParams));
 
                 return Success(asd);
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
-                return InternalError();
-            }
-        }
-
-        [Authorize(Policy = "SessionToken")]
-        [HttpGet("activities/")]
-        public async Task<JsonResult> GetallActivities()
-        {
-            try
-            {
-                var act = await Task.FromResult(_activity.GetAllActivities());
-
-                return Success(act);
             }
             catch (Exception e)
             {
@@ -95,20 +110,6 @@ namespace TimeReg_Api.TimeRegApp.Controllers
             }
         }
 
-        [HttpGet("activityid/{id}")]
-        public async Task<JsonResult> GetRegistrationById(int id)
-        {
-            try
-            {
-                var act = await Task.FromResult(_activity.GetRegistrationById(id));
-                return Success(act);
-            }
-            catch (Exception e)
-            {
-                _logger.LogWarning($"Couldn't find registration with that id - Except {e.ToString()}");
-                return InternalError();
-            }
-        }
 
         [HttpPost("activityupdate/{id}")]
         public async Task<JsonResult> UpdateRegistration(int id, [FromForm] string activity)
