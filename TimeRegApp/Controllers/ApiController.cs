@@ -65,16 +65,31 @@ namespace TimeReg_Api.TimeRegApp.Controllers
 
         [Authorize(Policy = "SessionToken")]
         [HttpGet("timeregistrations/")]
-        public async Task<JsonResult> GetAllTimeRegs()
+        public async Task<JsonResult> GetAllTimeregistrations()
         {
             try
             {
-                var treg = await Task.FromResult(_timeRegistration.GetTimeRegistrations());
+                var treg = await Task.FromResult(_timeRegistration.GetAllTimeregistrations());
                 return Success(treg);
             }
             catch (Exception e)
             {
-                _logger.LogWarning($"Something went bad! - Exception: {e.ToString()}");
+                _logger.LogError($"Error fetching users - Exception {e.ToString()}");
+                return InternalError();
+            }
+        }
+
+        [HttpGet("timeregbydate/{date}")]
+        public async Task<JsonResult> GetTimeRegByDate(DateTime date)
+        {
+            try
+            {
+                var treg = await Task.FromResult(_timeRegistration.GetTimeRegByDate(date));
+                return Success(treg);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error fetching users - Exception {e.ToString()}");
                 return InternalError();
             }
         }

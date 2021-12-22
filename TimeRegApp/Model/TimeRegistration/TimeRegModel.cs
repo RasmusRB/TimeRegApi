@@ -2,14 +2,11 @@
 {
     public class TimeRegModel
     {
-        public int Id { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        // Two new properties
-        public int ActivityId { get; set; }
-        public int UserId { get; set; }
-
+        public int timereg_id { get; set; }
+        public DateTime timereg_created { get; set; }
+        public DateTime timereg_start { get; set; }
+        public DateTime timereg_end { get; set; }
+        public int activity_id { get; set; }
+        public int user_id { get; set; }
     }
 }
