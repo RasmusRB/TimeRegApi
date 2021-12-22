@@ -104,6 +104,7 @@ namespace TimeReg_Api.TimeRegApp.Controllers
                 timeParams.Add("@timereg_start", tReg.Started);
                 timeParams.Add("@timereg_end", tReg.Ended);
                 timeParams.Add("@activity_id", tReg.ActivityId);
+                timeParams.Add("@timereg_comment", tReg.Comment);
 
                 // Somehow get user_id from session.
                 timeParams.Add("@user_id", tReg.UserId);

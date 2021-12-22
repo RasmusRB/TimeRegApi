@@ -17,6 +17,7 @@ namespace TimeReg_Api.Migrations
                     timereg_created = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "now()"),
                     timereg_start = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "now()"),
                     timereg_end = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "now()"),
+                    timereg_comment = table.Column<string>(type: "text", nullable: true),
                     activity_id = table.Column<long>(type: "bigint", nullable: false),
                     user_id = table.Column<long>(type: "bigint", nullable: false),
                 },

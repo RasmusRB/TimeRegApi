@@ -22,14 +22,11 @@ namespace TimeReg_Api.TimeRegApp.Model.TimeRegistration
         public TimeRegModel CreateTimeStamp(DynamicParameters tReg)
         {
             using IDbConnection db = new NpgsqlConnection(_connectionString);
-            return db.Query<TimeRegModel>(@"INSERT INTO timeregistration (timereg_start, timereg_end, activity_id, user_id) VALUES (@timereg_start, @timereg_end, @activity_id, @user_id) returning*", tReg).FirstOrDefault();
+            return db.Query<TimeRegModel>(@"INSERT INTO timeregistration (timereg_start, timereg_end, timereg_comment, activity_id, user_id) VALUES (@timereg_start, @timereg_end, @timereg_comment, @activity_id, @user_id) returning*", tReg).FirstOrDefault();
         }
 
         public List<TimeRegModel> GetTimeRegByDate(DateTime date)
         {
-            // using IDbConnection db = new NpgsqlConnection(_connectionString);
-            // return db.Query<TimeRegModel>(@"SELECT * FROM timeregistration WHERE CAST(timereg_created as DATE) = @date").AsList();
-
             var parms = new DynamicParameters();
             parms.Add("@date", date);
 
